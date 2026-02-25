@@ -8,25 +8,6 @@
       <p>Price: ${{ item.price }}</p>
       <button @click="addToCart(item)">Add to Cart</button>
     </div>
-    <div v-if="cart.length > 0" class="cart">
-      <h2>Shopping Cart</h2>
-
-      <div v-for="item in cart" :key="item.id" class="cart-item">
-        <h4>{{ item.name }}</h4>
-
-        <p>
-          Quantity:
-          <button @click="decreaseQuantity(item)">-</button>
-          {{ item.quantity }}
-          <button @click="increaseQuantity(item)">+</button>
-        </p>
-
-        <p>Subtotal: ${{ (item.price * item.quantity).toFixed(2) }}</p>
-
-        <button @click="removeFromCart(item.id)">Remove</button>
-      </div>
-      <h3>Total: ${{ totalPrice }}</h3>
-    </div>
   </div>
 </template>
 
