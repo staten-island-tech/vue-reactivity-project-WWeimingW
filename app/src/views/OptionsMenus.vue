@@ -21,12 +21,12 @@
       <button @click="removefromcart(item.id)">Remove</button>
     </div>
 
-    <h3 v-if="cart.length > 0">Total: ${{ totalPrice.toFixed(2) }}</h3>
+    <h3 v-if="cart.length > 0">Total: ${{ totalprice.toFixed(2) }}</h3>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const menuItems = ref([
   { id: 1, name: 'Big Mac', price: 5.99, category: 'Burger' },
@@ -38,17 +38,31 @@ const menuItems = ref([
 const cart = ref([])
 
 const addtocart = (item) => {
-  const Item = cart.value.find((i) => i.id === item.id)
-
-  if (Item) {
-    Item.quantity++
+  const existingItem = cart.value.find((i) => i.id === item.id)
+  if (existingItem) {
+    existingItem.quantity++
   } else {
     cart.value.push({ ...item, quantity: 1 })
   }
 }
-const decreasequantity
 
-const removefromcart
+const decreasequantity = (item) => {
+  if (item.quantity > 1) {
+    item.quantity--
+  } else {
+    removefromcart(item.id)
+  }
+}
+
+const removefromcart = (id) => {
+  cart.value = cart.value.filter((item) => item.id !== id)
+}
+
+const totalprice = computed(() => {
+  return cart.value.reduce((total, item) => {
+    return total + item.price * item.quantity
+  }, 0)
+})
 </script>
 
 <style>
