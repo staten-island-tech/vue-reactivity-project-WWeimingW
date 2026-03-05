@@ -66,14 +66,40 @@ const totalprice = computed(() => {
 </script>
 
 <style>
+body {
+  font-family: Arial;
+  background-color: #fff8e1;
+  text-align: center;
+}
+
+h1 {
+  color: #da291c;
+}
+
 .menu-item {
-  margin-bottom: 20px;
+  border: 2px solid #ffc72c;
+  background: white;
+  padding: 10px;
+  margin: 10px;
 }
+
 .cart-item {
-  margin-bottom: 10px;
+  border: 2px solid #da291c;
+  background: white;
+  padding: 10px;
+  margin: 10px;
 }
+
 button {
-  margin-top: 5px;
-  margin-right: 5px;
+  background-color: #da291c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #b71c1c;
 }
 </style>
