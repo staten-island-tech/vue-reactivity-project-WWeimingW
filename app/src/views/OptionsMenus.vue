@@ -1,32 +1,30 @@
 <template>
-  <div>
+  <main class="menu">
     <h1>McDonald's Menu</h1>
+    <section class="menu-items">
+      <MenuItem v-for="item in menuItems" :key="item.id" :item="item" @add="addToCart"/>
+    </section>
 
-    <div v-for="item in menuItems" :key="item.id" class="menu-item">
-      <h3>{{ item.name }}</h3>
-      <p>Category: {{ item.category }}</p>
-      <p>Price: ${{ item.price.toFixed(2) }}</p>
-      <button @click="addtocart(item)">Add to Cart</button>
-    </div>
-
-    <h2>Cart</h2>
-    <div v-if="cart.length === 0">
-      <p>Your cart is empty.</p>
-    </div>
-    <div v-for="item in cart" :key="item.id" class="cart-item">
-      <h4>{{ item.name }}</h4>
-      <p>${{ item.price.toFixed(2) }} x {{ item.quantity }}</p>
-      <button @click="item.quantity++">+</button>
-      <button @click="decreasequantity(item)">-</button>
-      <button @click="removefromcart(item.id)">Remove</button>
-    </div>
-
-    <h3 v-if="cart.length > 0">Total: ${{ totalprice.toFixed(2) }}</h3>
-  </div>
+    <section class="cart">
+      <h2>Cart</h2>
+      <p v-if="cart.length === 0">Your cart is empty</p>
+      <CartItem
+        v-for="item in cart"
+        :key="item.id"
+        :item="item"
+        @increase="increaseQuantity"
+        @decrease="decreaseQuantity"
+        @remove="removeFromCart"
+      />
+      <h3 v-if="cart.length > 0">Total: ${{ totalPrice.toFixed(2) }}</h3>
+    </section>
+  </main>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import MenuItem from '../components/MenuItem.vue'
+import CartItem from '../components/CartItem.vue'
 
 const menuItems = ref([
   { id: 1, name: 'Big Mac', price: 5.99, category: 'Burger' },
@@ -36,29 +34,28 @@ const menuItems = ref([
 ])
 
 const cart = ref([])
-
-const addtocart = (item) => {
-  const existingItem = cart.value.find((i) => i.id === item.id)
-  if (existingItem) {
-    existingItem.quantity++
+function addToCart(item) {
+  const existing = cart.value.find((i) => i.id === item.id)
+  if (existing) {
+    existing.quantity++
   } else {
     cart.value.push({ ...item, quantity: 1 })
   }
 }
-
-const decreasequantity = (item) => {
+function increaseQuantity(item) {
+  item.quantity++
+}
+function decreaseQuantity(item) {
   if (item.quantity > 1) {
     item.quantity--
   } else {
-    removefromcart(item.id)
+    removeFromCart(item.id)
   }
 }
-
-const removefromcart = (id) => {
+function removeFromCart(id) {
   cart.value = cart.value.filter((item) => item.id !== id)
 }
-
-const totalprice = computed(() => {
+const totalPrice = computed(() => {
   return cart.value.reduce((total, item) => {
     return total + item.price * item.quantity
   }, 0)
@@ -66,40 +63,29 @@ const totalprice = computed(() => {
 </script>
 
 <style>
-body {
+.menu {
+  max-width: 800px;
+  margin: auto;
   font-family: Arial;
-  background-color: #fff8e1;
-  text-align: center;
 }
 
-h1 {
-  color: #da291c;
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-.menu-item {
-  border: 2px solid #ffc72c;
-  background: white;
-  padding: 10px;
-  margin: 10px;
-}
-
+.menu-item,
 .cart-item {
-  border: 2px solid #da291c;
-  background: white;
+  border: 2px solid #ffc72c;
   padding: 10px;
-  margin: 10px;
+  background: white;
 }
 
 button {
-  background-color: #da291c;
+  background: #da291c;
   color: white;
   border: none;
-  padding: 5px 10px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #b71c1c;
+  padding: 6px 10px;
 }
 </style>
