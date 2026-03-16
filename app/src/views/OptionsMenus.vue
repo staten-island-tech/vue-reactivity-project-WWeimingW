@@ -2,7 +2,12 @@
   <main class="menu">
     <h1>McDonald's Menu</h1>
     <section class="menu-items">
-      <MenuItem v-for="item in menuItems" :key="item.id" :item="item" @add="addToCart"/>
+    <MenuItem 
+      v-for="item in menuItems" 
+      :key="item.id" 
+      :item="item" 
+      @add="addToCart"
+    />
     </section>
 
     <section class="cart">
