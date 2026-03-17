@@ -7,7 +7,7 @@
       :key="item.id" 
       :item="item" 
       @add="addToCart"
-    />
+      />
     </section>
 
     <section class="cart">

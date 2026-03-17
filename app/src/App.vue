@@ -1,8 +1,13 @@
 <template>
-  <div></div>
   <RouterView />
+  <!-- <button @click="router.push('/option')">
+    Go to Options
+  </button> -->
 </template>
 
-<script setup></script>
+<script setup>
 
-<style scoped></style>
+import { useRouter } from 'vue-router';
+const router = useRouter();
+router.push('/option');
+</script>
